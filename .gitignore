@@ -1,0 +1,15 @@
+# Dependecies
+node_modules
+
+yarn.lock
+yarn-error.log
+
+# Database
+db/*.db
+
+# Enviroment
+.env
+.env.test
+
+# Build
+builds
