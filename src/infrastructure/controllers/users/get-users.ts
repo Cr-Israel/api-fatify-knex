@@ -4,8 +4,12 @@ import { knex } from "../../../database";
 export class GetUsers {
   async handler(request: FastifyRequest, reply: FastifyReply) {
 
-    const users = await knex('users').select()
+    const { sessionId } = request.cookies
 
-    return { users }
+    const users = await knex('users')
+      .where('session_id', sessionId)
+      .select()
+
+    return users
   }
 }
