@@ -14,7 +14,17 @@ export class CreateUser {
 
     let sessionId = request.cookies.sessionId
 
-    if(!sessionId) {
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionId', sessionId, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7 // 7 days
+      })
+    }
+
+    // Para cada usuário criado, eu tenho um sessionId diferente.
+    if (sessionId) {
       sessionId = randomUUID()
 
       reply.cookie('sessionId', sessionId, {
