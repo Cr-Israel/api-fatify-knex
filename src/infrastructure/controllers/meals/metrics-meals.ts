@@ -4,7 +4,8 @@ import { knex } from "../../../database";
 
 export class Metrics {
   async handler(request: FastifyRequest, reply: FastifyReply) {
-    const { sessionId } = request.cookies
+    try {
+      const { sessionId } = request.cookies
 
     const user = await knex('users')
       .where('session_id', sessionId)
@@ -36,5 +37,8 @@ export class Metrics {
       .first();
 
     return { allMeals, mealsInDiet, mealsOutDiet, dietMealsInSeguence }
+    } catch (error) {
+      return reply.status(500).send({ error: error })
+    }
   }
 }

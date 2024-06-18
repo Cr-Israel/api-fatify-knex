@@ -3,9 +3,13 @@ import { knex } from "../../../database";
 
 export class GetAllUsers {
   async handler(request: FastifyRequest, reply: FastifyReply) {
-    const users = await knex('users')
-      .select()
+    try {
+      const users = await knex('users')
+        .select()
 
-    return users
+      return users
+    } catch (error) {
+      return reply.status(500).send()
+    }
   }
 }
