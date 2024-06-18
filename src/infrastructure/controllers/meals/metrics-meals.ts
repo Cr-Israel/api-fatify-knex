@@ -10,23 +10,31 @@ export class Metrics {
       .where('session_id', sessionId)
       .select()
 
-    const meals = await knex('meals')
+    const allMeals = await knex('meals')
       .where('user_id', user[0].id)
       .count({ count: '*' })
       .first()
 
     const mealsInDiet = await knex('meals')
       .where('user_id', user[0].id)
-      .sum('within_diet', { as: 'count' })
+      .where('within_diet', true)
+      .count({ count: '*' })
       .first()
 
-    // const mealsOutDiet = await knex('meals')
-    //   .where('user_id', user[0].id)
-    //   .where('within_diet', false)
-    //   .sum('within_diet', { as: 'count' })
-    //   .first()
+    const mealsOutDiet = await knex('meals')
+      .where('user_id', user[0].id)
+      .where('within_diet', false)
+      .count({ count: '*' })
+      .first()
 
-    return { meals, mealsInDiet }
-    // const dietMealsInSeguence
+    const dietMealsInSeguence = await knex('meals')
+      .where('user_id', user[0].id)
+      .select('name')
+      .count('name as count')
+      .groupBy('name')
+      .orderBy('count', 'desc')
+      .first();
+
+    return { allMeals, mealsInDiet, mealsOutDiet, dietMealsInSeguence }
   }
 }
