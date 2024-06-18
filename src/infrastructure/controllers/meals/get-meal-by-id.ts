@@ -23,7 +23,7 @@ export class GetMealById {
         .where('id', id)
         .select()
 
-      return { meal }
+      return reply.send({ meal })
     } catch (error) {
       return reply.status(500).send({ error: error })
     }
